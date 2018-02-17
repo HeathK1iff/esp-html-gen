@@ -122,6 +122,18 @@ public:
 	HtmlPassword();
 };
 
+class HtmlUpload : public HtmlInput
+{
+public:
+	HtmlUpload();
+};
+
+class HtmlSubmit : public HtmlInput
+{
+public:
+	HtmlSubmit();
+};
+
 class HtmlText : public HtmlInput
 {
 public:

@@ -18,6 +18,8 @@ Released into the public domain.
 #define ATT_CHECKBOX "checkbox"
 #define ATT_HIDDEN "hidden"
 #define ATT_PASSWORD "password"
+#define ATT_FILE "file"
+#define ATT_SUBMIT "submit"
 #define ATT_TEXT "text"
 #define ATT_STEP "step"
 #define ATT_MAX "max"
@@ -31,8 +33,8 @@ Released into the public domain.
 #define ATT_CHECKED "checked"
 #define ATT_ACTION "action"
 #define ATT_METHOD "method"
-#define ATT_GET_METHOD "get"
-#define ATT_POST_METHOD "post"
+#define ATT_GET_METHOD "GET"
+#define ATT_POST_METHOD "POST"
 #define ATT_HREF "href"
 
 #define TAG_BUTTON "button"
@@ -235,6 +237,16 @@ HtmlPassword::HtmlPassword() : HtmlInput()
 {
 	getAttributes()->append(ATT_TYPE, ATT_PASSWORD);
 };
+
+HtmlUpload::HtmlUpload() : HtmlInput()
+{
+	getAttributes()->append(ATT_TYPE, ATT_FILE);
+}
+
+HtmlSubmit::HtmlSubmit() : HtmlInput()
+{
+	getAttributes()->append(ATT_TYPE, ATT_SUBMIT);
+}
 
 HtmlText::HtmlText() : HtmlInput()
 {
