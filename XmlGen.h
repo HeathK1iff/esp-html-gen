@@ -93,7 +93,7 @@ namespace Xml
 		void print(char *text);
 
 	public:
-		XmlAttribute(char *key, IPrintableObject *val);
+		XmlAttribute(const char *key, IPrintableObject *val);
 		~XmlAttribute();
 		char *getKey();
 		void setValue(IPrintableObject *val);
@@ -107,17 +107,18 @@ namespace Xml
 	class XmlAttributes : public XmlArray
 	{
 	public:
-		XmlAttribute *getAttributeByKey(char *key);
+		XmlAttribute *getAttributeByKey(const char *key);
 
-		char *getStringValueByKey(char *key);
-		int getIntValueByKey(char *key);
-		float getFloatValueByKey(char *key);
+		char *getStringValueByKey(const char *key);
+		int getIntValueByKey(const char *key);
+		float getFloatValueByKey(const char *key);
 
-		XmlAttribute *append(char *key, IPrintableObject *val);
-		XmlAttribute *append(char *key, int val);
-		XmlAttribute *append(char *key, float val);
-		XmlAttribute *append(char *key, char *val);
-		XmlAttribute *append(char *key);
+		XmlAttribute *append(const char *key, IPrintableObject *val);
+		XmlAttribute *append(const char *key, int val);
+		XmlAttribute *append(const char *key, float val);
+		XmlAttribute *append(const char *key, char *val);
+		XmlAttribute *append(const char *key, const char *val);
+		XmlAttribute *append(const char *key);
 	};
 
 	class XmlTag : public XmlArray
@@ -130,7 +131,8 @@ namespace Xml
 		void print(char *text);
 
 	public:
-		XmlTag(char *name);
+		XmlTag(const char *name);
+		
 		~XmlTag();
 
 		void setText(IPrintableObject *value);

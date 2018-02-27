@@ -27,9 +27,10 @@ protected:
 	void print(char *text);
 
 public:
-	HtmlStyleAttribute(char *key, char *val);
-	HtmlStyleAttribute(char *key, int val);
-	HtmlStyleAttribute(char *key, float val);
+	HtmlStyleAttribute(const char *key, char *val);
+	HtmlStyleAttribute(const char *key, int val);
+	HtmlStyleAttribute(const char *key, float val);
+	HtmlStyleAttribute(const char *key, const char *val);
 
 	~HtmlStyleAttribute();
 };
@@ -39,9 +40,10 @@ class HtmlStyleAttributeArray : public XmlArray
 protected:
 	void print(char *text);
 public:
-	void append(char *key,  int value); 
-	void append(char *key,  float value); 
-	void append(char *key,  char *value); 
+	void append(const char *key,  int value); 
+	void append(const char *key,  float value); 
+	void append(const char *key,  char *value);
+	void append(const char *key,  const char *value);  
 };
 
 class HtmlStyleGroup : public HtmlStyleAttributeArray{
@@ -62,6 +64,8 @@ protected:
 	void print(char *text);
 public:
 	HtmlCustomTag(char *tag);
+	HtmlCustomTag(const char *tag);
+	
 	HtmlStyleAttributeArray *getStyle();
 };
 
@@ -69,6 +73,8 @@ class HtmlTag : public HtmlCustomTag
 {
 public:
 	HtmlTag(char *tag);
+    HtmlTag(const char *tag);
+
 
 	void append(IPrintableObject *val);
 };
@@ -87,13 +93,15 @@ protected:
 	void print(char *text);
 
 public:
-	HtmlInputableTag(char *tag);
+	HtmlInputableTag(const char *tag);
+	
 	int getSize();
 	void setSize(int size);
 	void setDisabled(bool state);
 	bool isDisabled();
 
 	void setName(char *name);
+	void setName(const char *name);
 	char *getName();
 	char *getId();
 	void setId(char *id);
@@ -219,7 +227,7 @@ protected:
 	void print(char *text);
 
 public:
-	HtmlHeader(char *name);
+	HtmlHeader(const char *name);
 	void setTitle(char *title);
 	HtmlStyle *getStyle();
 

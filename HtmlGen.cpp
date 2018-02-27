@@ -8,46 +8,44 @@ Released into the public domain.
 #include "XmlGen.h"
 #include <stdlib_noniso.h>
 
-#define PAGE_FOOTER "footer"
-#define PAGE_HEADER "header"
-#define PAGE_BODY "body"
-#define PAGE_TITLE "title"
-
-#define ATT_DISABLED "disabled"
-#define ATT_TYPE "type"
-#define ATT_CHECKBOX "checkbox"
-#define ATT_HIDDEN "hidden"
-#define ATT_PASSWORD "password"
-#define ATT_FILE "file"
-#define ATT_SUBMIT "submit"
-#define ATT_TEXT "text"
-#define ATT_STEP "step"
-#define ATT_MAX "max"
-#define ATT_MIN "min"
-#define ATT_SELECT "select"
-#define ATT_STYLE "style"
-#define ATT_SELECTED "selected"
-#define ATT_OPTION "option"
-#define ATT_NUMBER "number"
-#define ATT_VALUE "value"
-#define ATT_CHECKED "checked"
-#define ATT_ACTION "action"
-#define ATT_METHOD "method"
-#define ATT_GET_METHOD "GET"
-#define ATT_POST_METHOD "POST"
-#define ATT_HREF "href"
-
-#define TAG_BUTTON "button"
-#define TAG_STYLE "style"
-#define TAG_INPUT "input"
-#define TAG_NAME "name"
-#define TAG_ID "id"
-#define TAG_TITLE "title"
-#define TAG_TABLE "table"
-#define TAG_FORM "form"
-#define TAG_A "a"
-#define TAG_TD "td"
-#define TAG_TR "tr"
+const char PAGE_FOOTER[] = "footer";
+const char PAGE_HEADER[] = "header";
+const char PAGE_BODY[] = "body";
+const char PAGE_TITLE[] = "title";
+const char ATT_DISABLED[] = "disabled";
+const char ATT_TYPE[] = "type";
+const char ATT_CHECKBOX[] = "checkbox";
+const char ATT_HIDDEN[] = "hidden";
+const char ATT_PASSWORD[] = "password";
+const char ATT_FILE[] = "file";
+const char ATT_SUBMIT[] = "submit";
+const char ATT_TEXT[] = "text";
+const char ATT_STEP[] = "step";
+const char ATT_MAX[] = "max";
+const char ATT_MIN[] = "min";
+const char ATT_SELECT[] = "select";
+const char ATT_STYLE[] = "style";
+const char ATT_SELECTED[] = "selected";
+const char ATT_OPTION[] = "option";
+const char ATT_NUMBER[] = "number";
+const char ATT_VALUE[] = "value";
+const char ATT_CHECKED[] = "checked";
+const char ATT_ACTION[] = "action";
+const char ATT_METHOD[] = "method";
+const char ATT_GET_METHOD[] = "GET";
+const char ATT_POST_METHOD[] = "POST";
+const char ATT_HREF[] = "href";
+const char TAG_BUTTON[] = "button";
+const char TAG_STYLE[] = "style";
+const char TAG_INPUT[] = "input";
+const char TAG_NAME[] = "name";
+const char TAG_ID[] = "id";
+const char TAG_TITLE[] = "title";
+const char TAG_TABLE[] = "table";
+const char TAG_FORM[] = "form";
+const char TAG_A[] = "a";
+const char TAG_TD[] = "td";
+const char TAG_TR[] = "tr";
 
 class HtmlTagAccess : public XmlTag
 {
@@ -66,7 +64,7 @@ void HtmlStyleAttribute::print(char *text)
 	strcat(text, ";");
 }
 
-HtmlStyleAttribute::HtmlStyleAttribute(char *key, char *val)
+HtmlStyleAttribute::HtmlStyleAttribute(const char *key, char *val)
 {
 	this->key = new char[strlen(key) + 1];
 	this->key[0] = '\0';
@@ -77,7 +75,18 @@ HtmlStyleAttribute::HtmlStyleAttribute(char *key, char *val)
 	strcat(this->val, val);
 }
 
-HtmlStyleAttribute::HtmlStyleAttribute(char *key, int val)
+HtmlStyleAttribute::HtmlStyleAttribute(const char *key, const char *val)
+{
+	this->key = new char[strlen(key) + 1];
+	this->key[0] = '\0';
+	strcat(this->key, key);
+
+	this->val = new char[strlen(val) + 1];
+	this->val[0] = '\0';
+	strcat(this->val, val);
+}
+
+HtmlStyleAttribute::HtmlStyleAttribute(const char *key, int val)
 {
 	this->key = new char[strlen(key) + 1];
 	this->key[0] = '\0';
@@ -86,7 +95,7 @@ HtmlStyleAttribute::HtmlStyleAttribute(char *key, int val)
 	sprintf(this->val, "%d", val);
 }
 
-HtmlStyleAttribute::HtmlStyleAttribute(char *key, float val){
+HtmlStyleAttribute::HtmlStyleAttribute(const char *key, float val){
 	this->key = new char[strlen(key) + 1];
 	this->key[0] = '\0';
 
@@ -111,17 +120,22 @@ void HtmlStyleAttributeArray::print(char *text)
 	} while ((current = (HtmlStyleAttribute *)this->getNext(current)) != nullptr);
 }
 
-void HtmlStyleAttributeArray::append(char *key, char *value){
+void HtmlStyleAttributeArray::append(const char *key, char *value){
 	HtmlStyleAttribute *attribute = new HtmlStyleAttribute(key, value);
 	XmlArray::append(attribute);
 }
 
-void HtmlStyleAttributeArray::append(char *key,  int value){
+void HtmlStyleAttributeArray::append(const char *key,  int value){
 	HtmlStyleAttribute *attribute = new HtmlStyleAttribute(key, value);
 	XmlArray::append(attribute);
 }
 
-void HtmlStyleAttributeArray::append(char *key,  float value){
+void HtmlStyleAttributeArray::append(const char *key,  float value){
+	HtmlStyleAttribute *attribute = new HtmlStyleAttribute(key, value);
+	XmlArray::append(attribute);
+}
+
+void HtmlStyleAttributeArray::append(const char *key, const char *value){
 	HtmlStyleAttribute *attribute = new HtmlStyleAttribute(key, value);
 	XmlArray::append(attribute);
 }
@@ -137,6 +151,10 @@ void HtmlCustomTag::print(char *text)
 HtmlCustomTag::HtmlCustomTag(char *tag) : XmlTag(tag){
 
 };
+
+HtmlCustomTag::HtmlCustomTag(const char *tag) : XmlTag(tag){
+
+};	
 
 HtmlStyleAttributeArray *HtmlCustomTag::getStyle()
 {
@@ -166,6 +184,11 @@ void HtmlInputableTag::setName(char *name)
 	getAttributes()->append(TAG_NAME, name);
 }
 
+void HtmlInputableTag::setName(const char *name)
+{
+	getAttributes()->append(TAG_NAME, name);
+}
+
 char *HtmlInputableTag::getName()
 {
 	return getAttributes()->getStringValueByKey(TAG_NAME);
@@ -181,7 +204,7 @@ void HtmlInputableTag::setId(char *id)
 	getAttributes()->append(TAG_ID, id);
 }
 
-HtmlInputableTag::HtmlInputableTag(char *id) : HtmlCustomTag(id)
+HtmlInputableTag::HtmlInputableTag(const char *id) : HtmlCustomTag(id)
 {
 	;
 };
@@ -439,7 +462,7 @@ HtmlStyle *HtmlHeader::getStyle(){
 	return style; 
 }
 
-HtmlHeader::HtmlHeader(char *name) : XmlTag(name){};
+HtmlHeader::HtmlHeader(const char *name) : XmlTag(name){};
 
 void HtmlHeader::setTitle(char *title)
 {
@@ -661,6 +684,10 @@ HtmlButton::HtmlButton(char *caption): HtmlCustomTag(TAG_BUTTON){
 
 
 HtmlTag::HtmlTag(char *tag): HtmlCustomTag(tag){
+	;
+}
+
+HtmlTag::HtmlTag(const char *tag): HtmlCustomTag(tag){
 	;
 }
 

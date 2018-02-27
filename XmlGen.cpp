@@ -244,7 +244,7 @@ void XmlAttribute::setValue(IPrintableObject *val)
 	this->val = val;
 }
 
-XmlAttribute::XmlAttribute(char *key, IPrintableObject *val)
+XmlAttribute::XmlAttribute(const char *key, IPrintableObject *val)
 {
 	this->key = new char[strlen(key) + 1];
 	this->key[0] = '\0';
@@ -285,7 +285,7 @@ char *XmlAttribute::getStringValue()
 	return ((XmlValue *)this->val)->getStringValue();
 }
 
-XmlAttribute *XmlAttributes::getAttributeByKey(char *key)
+XmlAttribute *XmlAttributes::getAttributeByKey(const char *key)
 {
 	IPrintableAccess *current = (IPrintableAccess *)getFirst();
 	do
@@ -301,7 +301,7 @@ XmlAttribute *XmlAttributes::getAttributeByKey(char *key)
 	return nullptr;
 }
 
-char *XmlAttributes::getStringValueByKey(char *key)
+char *XmlAttributes::getStringValueByKey(const char *key)
 {
 	XmlAttribute *attr = getAttributeByKey(key);
 	if (attr != nullptr)
@@ -309,7 +309,7 @@ char *XmlAttributes::getStringValueByKey(char *key)
 	return "";
 }
 
-int XmlAttributes::getIntValueByKey(char *key)
+int XmlAttributes::getIntValueByKey(const char *key)
 {
 	XmlAttribute *attr = getAttributeByKey(key);
 	if (attr != nullptr)
@@ -317,7 +317,7 @@ int XmlAttributes::getIntValueByKey(char *key)
 	return 0;
 }
 
-float XmlAttributes::getFloatValueByKey(char *key)
+float XmlAttributes::getFloatValueByKey(const char *key)
 {
 	XmlAttribute *attr = getAttributeByKey(key);
 	if (attr != nullptr)
@@ -325,7 +325,7 @@ float XmlAttributes::getFloatValueByKey(char *key)
 	return 0;
 }
 
-XmlAttribute *XmlAttributes::append(char *key, IPrintableObject *val)
+XmlAttribute *XmlAttributes::append(const char *key, IPrintableObject *val)
 {
 	XmlAttribute *item = this->getAttributeByKey(key);
 
@@ -341,22 +341,27 @@ XmlAttribute *XmlAttributes::append(char *key, IPrintableObject *val)
 	return item;
 }
 
-XmlAttribute *XmlAttributes::append(char *key, int val)
+XmlAttribute *XmlAttributes::append(const char *key, int val)
 {
 	return append(key, new XmlValue(val));
 }
 
-XmlAttribute *XmlAttributes::append(char *key, float val)
+XmlAttribute *XmlAttributes::append(const char *key, float val)
 {
 	return append(key, new XmlValue(val));
 }
 
-XmlAttribute *XmlAttributes::append(char *key, char *val)
+XmlAttribute *XmlAttributes::append(const char *key, char *val)
 {
 	return append(key, new XmlValue(val));
 }
 
-XmlAttribute *XmlAttributes::append(char *key)
+XmlAttribute *XmlAttributes::append(const char *key, const char *val)
+{
+	return append(key, new XmlValue(val));
+}
+
+XmlAttribute *XmlAttributes::append(const char *key)
 {
 	return append(key, (XmlAttribute *)nullptr);
 }
@@ -382,7 +387,7 @@ void XmlTag::print(char *text)
 	strcat(text, ">");
 }
 
-XmlTag::XmlTag(char *name)
+XmlTag::XmlTag(const char *name)
 {
 	this->name = new char[strlen(name) + 1];
 	this->name[0] = '\0';
