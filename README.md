@@ -1,4 +1,4 @@
-# HtmlGen
+# Esp-html-gen
 
 This library provide possibility to easy generate html page for esp8266.
 
